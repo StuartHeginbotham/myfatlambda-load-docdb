@@ -19,8 +19,8 @@ try:
     
     logging.info(f'S3 --- bucket: {sys.argv[1]}, key: {sys.argv[2]}')
     logging.info(f'DocumentDB --- cluster: {sys.argv[3]}, database: {sys.argv[4]}, collection: {sys.argv[5]}')
-except:
-    logging.error(f'Input file and bucket not specified correctly')
+except Exception as e:
+    logging.error(f'Input file and bucket not specified correctly, {e}')
 
 
 s3=boto3.resource('s3')
@@ -30,16 +30,16 @@ client = pymongo.MongoClient(mycluster)
 
 try:
     obj=s3.Object(mybucket,mykey)
-except:
-    logging.error(f'Failed to access bucket and or file')
+except Exception as e:
+    logging.error(f'Failed to access bucket and or file, {e}')
 
 # Retrieve body from s3 object
 
 try:  
     mybody=obj.get()['Body'].read().decode("utf-8").splitlines()
     logging.info(f'mybody: {mybody}')
-except:
-    logging.error(f'Failed to retrieve body of input')
+except Exception as e :
+    logging.error(f'Failed to retrieve body of input, {e}')
 
 # Define connection to Document DB collection
 
